@@ -43,12 +43,12 @@ print(train_X_con.shape)
 n_timesteps, n_features, n_outputs = train_X_con.shape[1], train_X_con.shape[2], train_Y_con.shape[2]
 # define model
 model = Sequential()
-model.add(LSTM(200, activation='relu', input_shape=(train_X_con.shape[1],1)))
+model.add(LSTM(50, activation='relu', input_shape=(train_X_con.shape[1],1)))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(n_outputs))
 model.compile(loss='mse', optimizer='adam')
 # fit network
-final = model.fit(train_X_con, train_Y_con, epochs=50, batch_size=64, verbose=0)
+final = model.fit(train_X_con, train_Y_con, epochs=50, batch_size=64)
 # model referencing 
 # https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/
 
