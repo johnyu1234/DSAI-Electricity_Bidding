@@ -7,7 +7,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Flatten
 from keras.layers import LSTM
-
+from keras.layers import Dropout
 path = 'training_data'
 
 csv_files = glob.glob(path+"/*.csv")
@@ -43,12 +43,17 @@ print(train_X_con.shape)
 n_timesteps, n_features, n_outputs = train_X_con.shape[1], train_X_con.shape[2], train_Y_con.shape[2]
 # define model
 model = Sequential()
-model.add(LSTM(50, activation='relu', input_shape=(train_X_con.shape[1],1)))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(n_outputs))
-model.compile(loss='mse', optimizer='adam')
+model.add(LSTM(50, return_sequences=True, input_shape=(train_X_con.shape[1], 1)))
+model.add(LSTM(50, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(50, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(50))
+model.add(Dropout(0.2))
+model.add(Dense(1))
+model.compile(optimizer='adam', loss='mean_squared_error')
 # fit network
-final = model.fit(train_X_con, train_Y_con, epochs=50, batch_size=64)
+final = model.fit(train_X_con, train_Y_con, epochs=50, batch_size=32)
 # model referencing 
 # https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/
 
