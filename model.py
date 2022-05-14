@@ -2,6 +2,12 @@ import csv
 import glob 
 import pandas as pd
 import numpy as np 
+
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Flatten
+from keras.layers import LSTM
+
 path = '/Users/johns/Desktop/Spring 2022/DSAI-Electricity_Bidding/training_data'
 
 csv_files = glob.glob(path+"/*.csv")
@@ -29,3 +35,18 @@ train_Y_gen = np.array(train_Y_gen)
 
 print(train_X_con.shape)
 print(train_Y_con.shape)
+
+
+n_timesteps, n_features, n_outputs = train_X_con.shape[1], train_X_con.shape[2], train_Y_con.shape[1]
+# define model
+model = Sequential()
+model.add(LSTM(200, activation='relu', input_shape=(n_timesteps, n_features)))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(n_outputs))
+model.compile(loss='mse', optimizer='adam')
+# fit network
+final = model.fit(train_X_con, train_Y_con, epochs=epochs, batch_size=batch_size, verbose=verbose)
+# model referencing 
+# https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/
+
+
