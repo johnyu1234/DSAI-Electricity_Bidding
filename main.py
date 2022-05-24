@@ -1,3 +1,4 @@
+MARKET_PRICE = 2.5256
 
 # You should not modify this part.
 def config():
@@ -20,10 +21,38 @@ def output(path, data):
 
     return
 
+def action(buy, sell, gen, use, trade_price):
+    a = (buy-sell) + gen
+    b = a - use
+    if a>=0:
+        A = (buy-sell) * trade_price
+    else:
+        A = (-1) * gen * trade_price
+    if b>=0:
+        B = 0
+    else:
+        B = -1 * b * MARKET_PRICE
+    return (A+B)
 
 if __name__ == "__main__":
     args = config()
+    data = []
+    hour = []
+    gen = []
+    use = []
 
-    data = [["2018-01-01 00:00:00", "buy", 2.5, 3],
-            ["2018-01-01 01:00:00", "sell", 3, 5]]
+    # Predict tomorrow's consumption and generation data
+    # TODO
+    # Parameter needed later:
+    # hour = list of dates with hours corresponding with 'gen' & 'use'
+    # gen = prediction of next day's GENERATED electricity (list)
+    # use = prediction of next day's CONSUMED electricity (list)
+
+    # Decide to buy or sell
+    for i in range(len(hour)):
+        # normal_price = action(0, 0, gen[i], use[i], 0)
+        sell_unit = round((0.9*gen), 2)
+        sell_price = action(0, sell_unit, gen[i], use[i], sell_unit)
+        data.append([hour[i], 'sell', sell_unit, sell_unit])
+
     output(args.output, data)
