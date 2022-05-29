@@ -5,6 +5,11 @@ import numpy as np
 from dateutil import parser
 from datetime import timedelta # to add time into current
 from tensorflow.keras.models import load_model
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Flatten
+from keras.layers import LSTM
+from keras.layers import Dropout
 
 # You should not modify this part.
 def config():
