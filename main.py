@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from dateutil import parser
 from datetime import timedelta # to add time into current
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Flatten
@@ -85,10 +85,12 @@ if __name__ == "__main__":
     hour = create_date(generate_date)
     # for i in hour:
         # print(i)
-    model_con = load_model('consumption.h5')
-    model_gen = load_model('generation.h5')
+    model_con = load_model('consumption.h5',compile=False)
+    model_gen = load_model('generation.h5',compile=False)
     con = prediction(consumption,model_con)
     gen = prediction(generation,model_gen)
+    # gen[gen < 0] = 0
+    print(gen)
     
 
     # Predict tomorrow's consumption and generation data
@@ -99,10 +101,10 @@ if __name__ == "__main__":
     # use = prediction of next day's CONSUMED electricity (list)
 
     # Decide to buy or sell
-    for i in range(len(hour)):
-        # normal_price = action(0, 0, gen[i], use[i], 0)
-        sell_unit = round((0.9*gen), 2)
-        sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
-        data.append([hour[i], 'sell', sell_unit, sell_unit])
+    # for i in range(len(hour)):
+    #     # normal_price = action(0, 0, gen[i], use[i], 0)
+    #     sell_unit = round((0.9*gen), 2)
+    #     sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
+    #     data.append([hour[i], 'sell', sell_unit, sell_unit])
 
-    output(args.output, data)
+    # output(args.output, data)
