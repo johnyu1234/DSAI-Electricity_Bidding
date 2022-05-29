@@ -8,6 +8,7 @@ from keras.layers import Dense
 from keras.layers import Flatten
 from keras.layers import LSTM
 from keras.layers import Dropout
+
 path = 'training_data'
 
 csv_files = glob.glob(path+"/*.csv")

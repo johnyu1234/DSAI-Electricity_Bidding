@@ -40,6 +40,7 @@ def prediction(data_csv,model):
     np_test = np.reshape(np_test,(1,np_test.shape[0],1))
     # print(np_test.shape)
     ans = model.predict(np_test)
+    ans = ans.reshape(-1) 
     return ans
 
 def input_data(filename,data_type):
@@ -85,26 +86,20 @@ if __name__ == "__main__":
     hour = create_date(generate_date)
     # for i in hour:
         # print(i)
-    model_con = load_model('consumption.h5',compile=False)
-    model_gen = load_model('generation.h5',compile=False)
+    model_con = load_model('consumption.h5', compile = False)
+    model_gen = load_model('generation.h5',compile = False)
     con = prediction(consumption,model_con)
     gen = prediction(generation,model_gen)
-    # gen[gen < 0] = 0
-    print(gen)
-    
-
-    # Predict tomorrow's consumption and generation data
-    # TODO
-    # Parameter needed later:
-    # hour = list of dates with hours corresponding with 'gen' & 'use'
-    # gen = prediction of next day's GENERATED electricity (list)
-    # use = prediction of next day's CONSUMED electricity (list)
-
+    gen[gen<0] = 0
+    con[con<0] = 0
+    # print(gen)
+    con = con.tolist() 
+    gen = gen.tolist()
     # Decide to buy or sell
-    # for i in range(len(hour)):
-    #     # normal_price = action(0, 0, gen[i], use[i], 0)
-    #     sell_unit = round((0.9*gen), 2)
-    #     sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
-    #     data.append([hour[i], 'sell', sell_unit, sell_unit])
+    for i in range(len(hour)):
+        # normal_price = action(0, 0, gen[i], use[i], 0)     
+        sell_unit = round((0.9*gen[i]), 2)
+        sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
+        data.append([hour[i], 'sell', sell_unit, sell_unit])
 
     # output(args.output, data)
