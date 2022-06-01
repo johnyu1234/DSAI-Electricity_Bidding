@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from dateutil import parser
 from datetime import timedelta # to add time into current
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Flatten
@@ -97,9 +97,12 @@ if __name__ == "__main__":
     gen = gen.tolist()
     # Decide to buy or sell
     for i in range(len(hour)):
-        # normal_price = action(0, 0, gen[i], use[i], 0)     
-        sell_unit = round((0.9*gen[i]), 2)
-        sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
-        data.append([hour[i], 'sell', sell_unit, sell_unit])
+        if(gen[i] - con[i] > 0):    
+            sell_unit = round((0.9*gen[i]), 2)
+            sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
+            data.append([hour[i], 'sell', sell_unit, sell_unit])
+        else:
+            buy_unit = con[i] - gen[i]
+            data.append([hour[i], 'buy', buy_unit, buy_unit])
 
     # output(args.output, data)
