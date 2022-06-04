@@ -1,60 +1,67 @@
-# DSAI-HW3-2021
+# DSAI-ElectrictyBidding
 
-### Source
+The goal of this project is to design an agent which helps with electricity bidding to minimize the electricty bill of house.
 
-  - [Slide](https://docs.google.com/presentation/d/1JW27_5HXYZhqWmgvDhtXBaFTOfksO_dS/edit#slide=id.p1)
-  - [Dashboard](https://docs.google.com/spreadsheets/d/1cjhQewnXT2IbmYkGXRYNC5PlGRafcbVprCjgSFyDAaU/edit?pli=1#gid=0)
+## Data
 
-### Rules
+The dataset used in this project would be accumulation of 50 household dataset```NASDAQ:IBM```.  
+Data contains 3 columns: ```Hourly Power Consumption(kWh), Hourly Solar Power Generation(kWh), Hourly Bidding records```  
+The dataset contains 8 months worth of dataset
+<!-- ![Table sample](/img/table.png) -->
 
-- SFTP
+The chart below shows the graph of the training data (*close* data):  
+<!-- ![Chart sample](/img/chart.png)   -->
 
-```
+The dataset is then splited into two parts :
+- Power consumption (kWh)
+- Solar Power generation (kWh
+our goal is create two dataset which allows us to train two different LSTM model to each predict :
+- Consumption rate
+- Generation rate
+Which then be used to create the perfect agent for electricity bidding.
 
-┣━ upload/
-┗━ download/
-   ┣━ information/
-   ┃  ┗━ info-{mid}.csv
-   ┣━ student/
-   ┃  ┗━ {student_id}/
-   ┃     ┣━ bill-{mid}.csv
-   ┃     ┗━ bidresult-{mid}.csv
-   ┗━ training_data/
-      ┗━ target{household}.csv  
-      
-```
+## Training with Long Short-Term Memory (LSTM)
+Since we are mainly focusing on the time series problem. 
+- LSTM contains feedback connections which make them different to traditional feedforward neural networks.
+- which allows useful information about preious data in sequence to help with the processing of new data points.
 
-1. `mid` 為每次媒合編號
-2. `household` 為住戶編號，共 50 組
-3. 請使用發給組長的帳號密碼，將檔案上傳至 `upload/`
-4. 相關媒合及投標資訊皆在 `download/` 下可以找到，可自行下載使用
+### How does LSTM works?
+3 main dependencies:
+- cell state (current long-term memory of network)
+- previous hidden state (output of previous data)
+- input data 
 
+LSTM uses series of gates to control information flow
+which acts as filters to generate information for training:
+- forget gate
+- input gate
+- output gates  
 
-- File
+For more detailed explanation, please refer here [LSTM](https://towardsdatascience.com/lstm-networks-a-detailed-explanation-8fae6aefc7f9)
 
-```
+### Model Architecture
+Below is the summary of the model architecture used:  
+![Model summary](/img/model.png)
 
-┗━ {student_id}-{version}.zip
-   ┗━ {student_id}-{version}/
-      ┣━ Pipfile
-      ┣━ Pipfile.lock
-      ┣━ main.py
-      ┗━ {model_name}.hdf5
+## Testing
+To test the data
+not yet written
+We used 2 different methods of testing:  
+1. Split training data to test data [First 800 data are training, the rest are test].
+![Prediction chart: Split](/img/predict.png)  
+2. Use all training data to train, test data use ```testing.csv```  
+![Prediction chart: Separated](/img/test.png)  
 
-```
+The model should be fed with actual test data, otherwise the result will be terrible.  
+![Bad test](/img/badtest.png)  
 
-1. 請務必遵守上述的架構進行上傳 (model 不一定要有)
-2. 檔案壓縮請使用 `zip`，套件管理請使用 `pipenv`，python 版本請使用 `3.8`
-3. 檔名：{學號}-{版本號}.zip，例：`E11111111-v1.zip`
-4. 兩人一組請以組長學號上傳
-5. 傳新檔案時請往上加版本號，程式會自動讀取最大版本
-6. 請儲存您的模型，不要重新訓練
-
-- Bidding
-
-1. 所有輸入輸出的 csv 皆包含 header
-2. 請注意輸入的 `bidresult` 資料初始值為空
-3. 輸出時間格式為 `%Y-%m-%d %H:%M:%S` ，請利用三份輸入的 data 自行選一份，往後加一天即為輸出時間  
-   例如: 輸入 `2018-08-25 00:00:00 ~ 2018-08-31 23:00:00` 的資料，請輸出 `2018-09-01 00:00:00 ~ 2018-09-01 23:00:00` 的資料(一次輸出`一天`，每筆單位`一小時`)
-4. 程式每次執行只有 `120 秒`，請控制好您的檔案執行時間
-5. 每天的交易量限制 `100 筆`，只要有超出會全部交易失敗，請控制輸出數量
+## Trading Algorithm
+Our approach to maximize revenue is to introduce **stop loss** method.  
+Our algorithm can be simply explained by bullet points:
+- When no stock is held:
+  - If the stock price is predicted to go up, then **buy**.
+  - If the stock price is predicted to go down, then **hold**.
+- When stock is held:
+  - Keep track stock price of the current with the day before.
+  - If the current price is higher and next day stock is projected to go up, then **hold**.
+  - If the current price is higher and next day stock is projected to go down by 5%, then **sell**.
