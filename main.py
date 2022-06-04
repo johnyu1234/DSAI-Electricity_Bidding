@@ -97,12 +97,15 @@ if __name__ == "__main__":
     gen = gen.tolist()
     # Decide to buy or sell
     for i in range(len(hour)):
-        if(gen[i] - con[i] > 0):    
-            sell_unit = round((0.9*gen[i]), 2)
-            sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
-            data.append([hour[i], 'sell', sell_unit, sell_unit])
+        val = gen[i] - con[i]
+        if(val > 0):
+            # print(gen[i]) 
+            # sell_unit = round((0.9*gen[i]), 2)
+            # sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
+            for a in range(int(val)):
+                data.append([hour[i], 'sell', 2.2, 1])
         else:
-            buy_unit = con[i] - gen[i]
-            data.append([hour[i], 'buy', buy_unit, buy_unit])
+            for a in range(abs(int(val))):            
+                data.append([hour[i], 'buy', 2.5, 1])
 
-    # output(args.output, data)
+    output(args.output, data)
