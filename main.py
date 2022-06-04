@@ -106,6 +106,6 @@ if __name__ == "__main__":
                 data.append([hour[i], 'sell', 2.2, 1])
         else:
             for a in range(abs(int(val))):            
-                data.append([hour[i], 'buy', 2.5, 1])
+                data.append([hour[i], 'buy', 2.3, 1])
 
     output(args.output, data)
