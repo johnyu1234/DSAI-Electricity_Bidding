@@ -102,7 +102,7 @@ if __name__ == "__main__":
             for a in range(int(val)):
                 temp = round(val, 2)
                 data.append([hour[i], 'sell', temp+0.2, temp])
-        else:
+        elif(val < 0):
             for a in range(abs(int(val))):
                 temp = round((val * -1), 2)
                 data.append([hour[i], 'buy', 2.3*temp, temp])
