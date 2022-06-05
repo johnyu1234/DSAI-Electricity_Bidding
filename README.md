@@ -56,12 +56,8 @@ The model should be fed with actual test data, otherwise the result will be terr
 ![Bad test](/img/badtest.png)  
 
 ## Trading Algorithm
-Our approach to maximize revenue is to introduce **stop loss** method.  
-Our algorithm can be simply explained by bullet points:
-- When no stock is held:
-  - If the stock price is predicted to go up, then **buy**.
-  - If the stock price is predicted to go down, then **hold**.
-- When stock is held:
-  - Keep track stock price of the current with the day before.
-  - If the current price is higher and next day stock is projected to go up, then **hold**.
-  - If the current price is higher and next day stock is projected to go down by 5%, then **sell**.
+Our approach to minimize electricity bill:
+- Check for the electricity usage per hour
+- If the **generated** > **consumption**, then use it for the day and sell the rest for **generated amount + 0.2**
+- If the **generated** < **consumption**, then buy the needed electricity with the price of **1 unit for 2.3**
+- If the **generated** = **consumption**, do no action
