@@ -4,11 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+<<<<<<< HEAD
 pandas = "==1.4.2"
 numpy = "==1.19.5"
 tensorflow = "==2.6.0"
 scikit-learn = "==1.0.2"
 keras = "==2.6.0"
+=======
+pandas = "==1.2.0"
+keras = "*"
+tensorflow = "*"
+>>>>>>> parent of 3d112c4 (delete)
 
 [dev-packages]
 
