@@ -44,8 +44,11 @@ Two different trained model, same architecture
 To test the data
 Since there are two values that we are focusing on:
 1. prediction value of generated electricty
+
 ![Prediction chart: Split](/img/generation.png)  
+
 2. prediction value of consumption electricty
+
 ![Prediction chart: Separated](/img/consumption.png)  
 
 This is an example of the prediction of each model
