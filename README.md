@@ -4,7 +4,7 @@ The goal of this project is to design an agent which helps with electricity bidd
 
 ## Data
 
-The dataset used in this project would be accumulation of 50 household dataset```NASDAQ:IBM```.  
+The dataset used in this project would be accumulation of ```50 household dataset```.  
 Data contains 3 columns: ```Hourly Power Consumption(kWh), Hourly Solar Power Generation(kWh), Hourly Bidding records```  
 >
 
@@ -14,6 +14,7 @@ The dataset is then splited into two parts :
 our goal is create two dataset which allows us to train two different LSTM model to each predict :
 - Consumption rate
 - Generation rate
+
 Which then be used to create the perfect agent for electricity bidding.
 
 ## Training with Long Short-Term Memory (LSTM)
