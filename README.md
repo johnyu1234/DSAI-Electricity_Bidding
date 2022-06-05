@@ -58,6 +58,6 @@ The model should be fed with actual test data, otherwise the result will be terr
 ## Trading Algorithm
 Our approach to minimize electricity bill:
 - Check for the electricity usage per hour
-- If the **generated** > **consumption**, then use it for the day and sell the rest for **2.2 for every unit**
-- If the **generated** < **consumption**, then buy the needed electricity with the price of **2.3 for every unit**
+- If the **generated** > **consumption**, then use it for the day and sell the rest for **generated amount + 0.2**
+- If the **generated** < **consumption**, then buy the needed electricity with the price of **1 unit for 2.3**
 - If the **generated** = **consumption**, do no action

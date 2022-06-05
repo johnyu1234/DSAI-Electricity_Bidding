@@ -99,13 +99,12 @@ if __name__ == "__main__":
     for i in range(len(hour)):
         val = gen[i] - con[i]
         if(val > 0):
-            # print(gen[i]) 
-            # sell_unit = round((0.9*gen[i]), 2)
-            # sell_price = action(0, sell_unit, gen[i], con[i], sell_unit)
             for a in range(int(val)):
-                data.append([hour[i], 'sell', 2.2, 1])
-        else:
-            for a in range(abs(int(val))):            
-                data.append([hour[i], 'buy', 2.3, 1])
+                temp = round(val, 2)
+                data.append([hour[i], 'sell', temp+0.2, temp])
+        elif(val < 0):
+            for a in range(abs(int(val))):
+                temp = round((val * -1), 2)
+                data.append([hour[i], 'buy', 2.3*temp, temp])
 
     output(args.output, data)
